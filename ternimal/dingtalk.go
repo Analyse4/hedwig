@@ -1,8 +1,16 @@
 package ternimal
 
-import "github.com/Analyse4/hedwig/resource"
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"github.com/Analyse4/hedwig/resource"
+	"net/http"
+	"worldcup/log"
+)
 
 type DingTalk struct {
+	webHook string
 	MsgType string `json:"msgtype"`
 	Text    *Text  `json:"text"`
 	At      *At    `json:"at"`
@@ -15,15 +23,29 @@ type At struct {
 	IsAtAll   bool     `json:"isAtAll"`
 }
 
-func NewDingTalk() *DingTalk {
+func NewDingTalk(wh string) *DingTalk {
 	dg := new(DingTalk)
 	dg.Text = new(Text)
 	dg.At = new(At)
 	return dg
 }
 
-func (dt *DingTalk) Construct(resource *resource.Github) error {
+func (dt *DingTalk) Construct(resource *resource.Github) {
 	dt.MsgType = "text"
-	// construct text
+	t := fmt.Sprintf("%v-%v is %v\nlink: %v\n", resource.Repository.Name, resource.Release.TagName, resource.Action, resource.Release.HTMLURL)
+	dt.Text.Content = t
+}
+
+func (dt *DingTalk) Send() error {
+	data, err := json.Marshal(dt)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	buf := bytes.NewBuffer(data)
+	_, err = http.Post(dt.webHook, "application/json", buf)
+	if err != nil {
+		return err
+	}
 	return nil
 }
