@@ -23,4 +23,5 @@ stages:
             inputs:
               command: buildAndPush
               repository: analyse4/hedwig
+              tags: $(Build.SourceVersion)
 
