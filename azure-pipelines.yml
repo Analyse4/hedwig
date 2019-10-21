@@ -17,8 +17,9 @@ stages:
           - script: |
 #              echo "##vso[task.setvariable variable=tagarray]git tag -l v*"
 #              echo "##vso[task.setvariable variable=tagname]$TagArray[$TagArray.Count – 1]"
-              $TagArray= git tag -l v*
-              $TagName = $TagArray[$TagArray.Count – 1]
+            env:
+              TagArray = git tag -l v*
+              TagName = $TagArray[$TagArray.Count – 1]
               echo $TagArray
               echo $TagName
 #          - task: Docker@2
