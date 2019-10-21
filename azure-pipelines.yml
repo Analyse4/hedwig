@@ -10,7 +10,7 @@ stages:
   - stage: Build
     jobs:
       - job: build
-        condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+#        condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
         pool:
           vmImage: 'ubuntu-latest'
         steps:
