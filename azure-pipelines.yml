@@ -4,9 +4,10 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/go
 
 trigger:
-  include:
-    - master
-    - refs/tags/
+  branches:
+    include:
+      - master
+      - refs/tags/
 
 stages:
   - stage: Build
