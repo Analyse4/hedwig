@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Analyse4/hedwig/resource"
+	"log"
 	"net/http"
-	"worldcup/log"
 )
 
 type DingTalk struct {

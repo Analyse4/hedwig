@@ -1,4 +1,4 @@
-package hedwig
+package main
 
 import (
 	"github.com/Analyse4/hedwig/handler"
