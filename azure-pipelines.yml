@@ -18,7 +18,7 @@ stages:
           vmImage: 'ubuntu-latest'
         steps:
           - script:
-              echo $ALIYUNECS1
+              echo $(ALIYUNECS1)
 #          - task: Docker@2
 #            displayName: Login to Docker Hub
 #            inputs:
