@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Analyse4/hedwig/resource"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"time"
@@ -56,16 +55,10 @@ func (dt *DingTalk) Send() error {
 	tp := &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}
 	hClient := new(http.Client)
 	hClient.Transport = tp
-	res, err := hClient.Do(req)
+	_, err = hClient.Do(req)
 	if err != nil {
 		return err
 	}
-	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return err
-	}
-	log.Printf("%v send to dingtalk robot, text: %v", time.Now(), dt.Text)
-	log.Printf("res: %v", body)
+	log.Printf("%v send to dingtalk robot, text: %v", time.Now(), dt.Text.Content)
 	return nil
 }

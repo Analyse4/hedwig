@@ -44,13 +44,15 @@ func ForwardMessage(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	dgt := ternimal.NewDingTalk(DINGTALKWEBHOOK)
-	dgt.Construct(ghr)
-	err = dgt.Send()
-	if err != nil {
-		log.Println(err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
+	if ghr.Action == "published" {
+		dgt := ternimal.NewDingTalk(DINGTALKWEBHOOK)
+		dgt.Construct(ghr)
+		err = dgt.Send()
+		if err != nil {
+			log.Println(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
 	}
 	w.WriteHeader(http.StatusOK)
 }
