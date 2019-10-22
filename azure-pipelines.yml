@@ -19,12 +19,12 @@ stages:
         steps:
           - script: |
               echo $(PRIVATEKEY)
-          - task: InstallSSHKey@0
-            inputs:
-              knownHostsEntry: $(KNOWNHOSTS)
-              sshPublicKey: $(PUBLICKEY)
-              #sshPassphrase: # Optional
-              sshKeySecureFile: $(PRIVATEKEY)
+#          - task: InstallSSHKey@0
+#            inputs:
+#              knownHostsEntry: $(KNOWNHOSTS)
+#              sshPublicKey: $(PUBLICKEY)
+#              #sshPassphrase: # Optional
+#              sshKeySecureFile: $(PRIVATEKEY)
           - script: |
               ls -l ~/.ssh
 #          - task: Docker@2
