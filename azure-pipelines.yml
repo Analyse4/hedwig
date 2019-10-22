@@ -7,8 +7,6 @@ trigger:
   branches:
     include:
       - master
-#variables:
-#  - group: alicloud-ecs-1
 
 stages:
   - stage: Build
@@ -17,40 +15,26 @@ stages:
         pool:
           vmImage: 'ubuntu-latest'
         steps:
-          # Download secure file
-          # Download a secure file to the agent machine
-#          - task: DownloadSecureFile@1
-#            name: sshPrivateKey # The name with which to reference the secure file's path on the agent, like $(mySecureFile.secureFilePath)
-#            inputs:
-#              secureFile: joker.pem # The file name or GUID of the secure file
-#          - script: |
-#              echo $(sshPrivateKey.secureFilePath)
-          # SSH
-          # Run shell commands or a script on a remote machine using SSH
-          - task: SSH@0
+          - task: Docker@2
+            displayName: Login to Docker Hub
             inputs:
-              sshEndpoint: alibabacloud-ecs-1
-              runOptions: 'commands' # Options: commands, script, inline
-              commands: mkdir -p /root/test/test # Required when runOptions == Commands
-              #scriptPath: # Required when runOptions == Script
-              #inline: # Required when runOptions == Inline
-              #args: # Optional
-              #failOnStdErr: true # Optional
-#          - task: InstallSSHKey@0
+              command: login
+              containerRegistry: DockerHub
+          - task: Docker@2
+            displayName: Build and Push
+            inputs:
+              command: buildAndPush
+              repository: analyse4/hedwig
+              tags: 0.0.1-alpha.4
+#          # SSH
+#          # Run shell commands or a script on a remote machine using SSH
+#          - task: SSH@0
 #            inputs:
-#              knownHostsEntry: $(KNOWNHOSTS)
-#              sshPublicKey: $(PUBLICKEY)
-#              #sshPassphrase: # Optional
-#              sshKeySecureFile: $(PRIVATEKEY)
-#          - task: Docker@2
-#            displayName: Login to Docker Hub
-#            inputs:
-#              command: login
-#              containerRegistry: DockerHub
-#          - task: Docker@2
-#            displayName: Build and Push
-#            inputs:
-#              command: buildAndPush
-#              repository: analyse4/hedwig
-#              tags: 0.0.1-alpha.3
+#              sshEndpoint: alibabacloud-ecs-1
+#              runOptions: 'commands' # Options: commands, script, inline
+#              commands: mkdir -p /root/test/test # Required when runOptions == Commands
+#              #scriptPath: # Required when runOptions == Script
+#              #inline: # Required when runOptions == Inline
+#              #args: # Optional
+#              #failOnStdErr: true # Optional
 
