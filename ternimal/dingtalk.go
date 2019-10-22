@@ -2,9 +2,11 @@ package ternimal
 
 import (
 	"bytes"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"github.com/Analyse4/hedwig/resource"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"time"
@@ -45,10 +47,25 @@ func (dt *DingTalk) Send() error {
 		return err
 	}
 	buf := bytes.NewBuffer(data)
-	_, err = http.Post(dt.webHook, "application/json", buf)
+	//_, err = http.Post(dt.webHook, "application/json", buf)
+	req, err := http.NewRequest("POST", dt.webHook, buf)
 	if err != nil {
 		return err
 	}
-	log.Printf("%v send to dingtalk robot success, text: %v", time.Now(), dt.Text)
+	req.Header.Set("Content-Type", "application/json")
+	tp := &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}
+	hClient := new(http.Client)
+	hClient.Transport = tp
+	res, err := hClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer res.Body.Close()
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
+	log.Printf("%v send to dingtalk robot, text: %v", time.Now(), dt.Text)
+	log.Printf("res: %v", body)
 	return nil
 }
