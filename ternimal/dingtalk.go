@@ -28,6 +28,7 @@ func NewDingTalk(wh string) *DingTalk {
 	dg := new(DingTalk)
 	dg.Text = new(Text)
 	dg.At = new(At)
+	dg.webHook = wh
 	return dg
 }
 
