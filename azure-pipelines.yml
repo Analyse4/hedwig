@@ -29,7 +29,7 @@ stages:
           # Run shell commands or a script on a remote machine using SSH
           - task: SSH@0
             inputs:
-              sshEndpoint: endpoint -i $(sshPrivateKey.secureFilePath)
+              sshEndpoint: $(endpoint) -i $(sshPrivateKey.secureFilePath)
               runOptions: 'commands' # Options: commands, script, inline
               commands: mkdir -p /root/test/test # Required when runOptions == Commands
               #scriptPath: # Required when runOptions == Script
