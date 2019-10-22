@@ -17,13 +17,15 @@ stages:
         pool:
           vmImage: 'ubuntu-latest'
         steps:
+          - script: |
+              echo $(PRIVATEKEY)
           - task: InstallSSHKey@0
             inputs:
               knownHostsEntry: $(KNOWNHOSTS)
               sshPublicKey: $(PUBLICKEY)
               #sshPassphrase: # Optional
               sshKeySecureFile: $(PRIVATEKEY)
-          - script:
+          - script: |
               ls -l ~/.ssh
 #          - task: Docker@2
 #            displayName: Login to Docker Hub
