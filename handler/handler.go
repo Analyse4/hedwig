@@ -15,6 +15,10 @@ func ForwardMessage(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
+	if r.Header.Get("X-GitHub-Event") == "ping" {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
 	if r.Header.Get("Content-Type") != "application/json" {
 		w.WriteHeader(http.StatusBadRequest)
 		return
