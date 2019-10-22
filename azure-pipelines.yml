@@ -23,7 +23,7 @@ stages:
             name: sshPrivateKey # The name with which to reference the secure file's path on the agent, like $(mySecureFile.secureFilePath)
             inputs:
               secureFile: joker.pem # The file name or GUID of the secure file
-          - script |
+          - script: |
               echo $(sshPrivateKey.secureFilePath)
           # SSH
           # Run shell commands or a script on a remote machine using SSH
