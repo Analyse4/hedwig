@@ -7,6 +7,8 @@ trigger:
   branches:
     include:
       - master
+variables:
+  TAG: 0.0.1-alpha.6
 
 stages:
   - stage: Build
@@ -25,7 +27,7 @@ stages:
             inputs:
               command: buildAndPush
               repository: analyse4/hedwig
-              tags: 0.0.1-alpha.5
+              tags: $(TAG)
 #          # SSH
 #          # Run shell commands or a script on a remote machine using SSH
 #          - task: SSH@0

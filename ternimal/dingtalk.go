@@ -7,6 +7,7 @@ import (
 	"github.com/Analyse4/hedwig/resource"
 	"log"
 	"net/http"
+	"time"
 )
 
 type DingTalk struct {
@@ -47,5 +48,6 @@ func (dt *DingTalk) Send() error {
 	if err != nil {
 		return err
 	}
+	log.Printf("%v send to dingtalk robot success, text: %v", time.Now(), dt.Text)
 	return nil
 }
