@@ -8,7 +8,7 @@ trigger:
     include:
       - master
 variables:
-  TAG: 0.0.1-alpha.9
+  TAG: 0.0.1-alpha.10
 
 stages:
   - stage: Build
