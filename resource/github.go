@@ -171,7 +171,7 @@ type Sender struct {
 func NewGithub() *Github {
 	gh := new(Github)
 	gh.Release = new(Release)
-	gh.Release.Assets = make([]interface{}, 5)
+	gh.Release.Assets = make([]interface{}, 0)
 	gh.Release.Author = new(Author)
 	gh.Repository = new(Repository)
 	gh.Repository.Owner = new(Owner)
