@@ -39,11 +39,11 @@ stages:
           - task: SSH@0
             inputs:
               sshEndpoint: alibabacloud-ecs-1
-              runOptions: 'inline' # Options: commands, script, inline
-              #commands: mkdir -p /root/test/test # Required when runOptions == Commands
+              runOptions: 'commands' # Options: commands, script, inline
+              commands: mkdir -p /root/test/test # Required when runOptions == Commands
               #scriptPath: # Required when runOptions == Script
-              inline: |
-                mkdir -p test/test
+#              inline: |
+#                mkdir -p /root/test/test
               #args: # Optional
               #failOnStdErr: true # Optional
 
