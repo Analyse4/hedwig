@@ -8,7 +8,7 @@ trigger:
     include:
       - master
 variables:
-  TAG: 0.0.1-alpha.14
+  TAG: 0.0.1-alpha.15
 
 stages:
   - stage: Build
@@ -45,17 +45,17 @@ stages:
               inline: |
                 # stop container
                 CONTAINER_ID=$(docker ps -qf name=hedwig)
-                if [["$(CONTAINER_ID) 2> /dev/null" != ""]]; then
-                  docker stop $(CONTAINER_ID)
-                  docker rm $(CONTAINER_ID)
+                if [[ ! -z $CONTAINER_ID ]]; then
+                  docker stop $CONTAINER_ID
+                  docker rm $CONTAINER_ID
                 fi
                 # delete old images
-                if [["$(docker images -q --filter=reference='analyse4/hedwig*') 2> /dev/null" != ""]]; then
+                if [[ ! -z $(docker images -q --filter=reference='analyse4/hedwig*') ]]; then
                   docker rmi $(docker images -q --filter=reference='analyse4/hedwig*')
                 fi
                 # pull new image
                 docker pull analyse4/hedwig:$(TAG)
-                if [[ "$(docker images -q analyse4/hedwig:$(TAG) 2> /dev/null)" == "" ]]; then
+                if [[ -z  "$(docker images -q analyse4/hedwig:$(TAG))" ]]; then
                   exit 1
                 fi
                 # run new container
