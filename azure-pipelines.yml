@@ -8,7 +8,7 @@ trigger:
     include:
       - master
 variables:
-  TAG: 0.0.1-alpha.11
+  TAG: 0.0.1-alpha.12
 
 stages:
   - stage: Build
@@ -28,15 +28,38 @@ stages:
               command: buildAndPush
               repository: analyse4/hedwig
               tags: $(TAG)
+  - stage: Deploy
+    jobs:
+      - job: deploy
+        pool:
+          vmImage: 'ubuntu-latest'
+          steps:
 #          # SSH
 #          # Run shell commands or a script on a remote machine using SSH
-#          - task: SSH@0
-#            inputs:
-#              sshEndpoint: alibabacloud-ecs-1
-#              runOptions: 'commands' # Options: commands, script, inline
-#              commands: mkdir -p /root/test/test # Required when runOptions == Commands
-#              #scriptPath: # Required when runOptions == Script
-#              #inline: # Required when runOptions == Inline
-#              #args: # Optional
-#              #failOnStdErr: true # Optional
+          - task: SSH@0
+            inputs:
+              sshEndpoint: alibabacloud-ecs-1
+              runOptions: 'inline' # Options: commands, script, inline
+              #commands: mkdir -p /root/test/test # Required when runOptions == Commands
+              #scriptPath: # Required when runOptions == Script
+              inline: | # Required when runOptions == Inline
+                # stop container
+                CONTAINER_ID=$(docker ps -qf name=hedwig)
+                if [["$(CONTAINER_ID) 2> /dev/null" != ""]]; then
+                  docker stop $(CONTAINER_ID)
+                  docker rm $(CONTAINER_ID)
+                fi
+                # delete old images
+                if [["$(docker images -q --filter=reference='analyse4/hedwig*') 2> /dev/null" != ""]]; then
+                  docker rmi $(docker images -q --filter=reference='analyse4/hedwig*')
+                fi
+                # pull new image
+                docker pull analyse4/hedwig:$(TAG)
+                if [[ "$(docker images -q analyse4/hedwig:$(TAG) 2> /dev/null)" == "" ]]; then
+                  exit 1
+                fi
+                # run new container
+                docker run -p 2245:2245 -d --name hedwig analyse4/hedwig:$(TAG)
+              #args: # Optional
+              #failOnStdErr: true # Optional
 
