@@ -36,14 +36,14 @@ stages:
           steps:
 #          # SSH
 #          # Run shell commands or a script on a remote machine using SSH
-          - task: SSH@0
-            inputs:
-              sshEndpoint: alibabacloud-ecs-1
-              runOptions: 'commands' # Options: commands, script, inline
-              commands: mkdir -p /root/test/test # Required when runOptions == Commands
-              #scriptPath: # Required when runOptions == Script
-#              inline: |
-#                mkdir -p /root/test/test
-              #args: # Optional
-              #failOnStdErr: true # Optional
+            - task: SSH@0
+              inputs:
+                sshEndpoint: alibabacloud-ecs-1
+                runOptions: 'commands' # Options: commands, script, inline
+                commands: mkdir -p /root/test/test # Required when runOptions == Commands
+                #scriptPath: # Required when runOptions == Script
+                 inline: |
+                   mkdir -p /root/test/test
+                #args: # Optional
+                #failOnStdErr: true # Optional
 
